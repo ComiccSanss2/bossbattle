@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://k1qdmcd2q805"]
+
+[ext_resource type="Texture2D" uid="uid://bwvxho3ilcek3" path="res://assets/environment/Mossy Tileset/Mossy - TileSet.png" id="1_e05a3"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wl4x5"]
+texture = ExtResource("1_e05a3")
+texture_region_size = Vector2i(512, 512)
+
+[sub_resource type="TileSet" id="TileSet_olpmc"]
+tile_size = Vector2i(512, 512)
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_wl4x5")
+
+[node name="Arena" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_olpmc")
+format = 2
