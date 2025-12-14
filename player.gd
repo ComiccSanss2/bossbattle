@@ -91,7 +91,7 @@ func start_attack():
 # Funzione per PRENDERE danno (chiamata dal Boss o nemici)
 func take_damage(amount, source_position):
 	if is_invincible: return
-	
+	$Camera2D.apply_shake(5.0) # Tremore forte
 	health -= amount
 	print("Ahia! HP Player: ", health)
 	
@@ -138,7 +138,7 @@ func die():
 # Funzione per INFLIGGERE danno (quando la spada tocca qualcosa)
 func _on_sword_hit(body):
 	if body == self: return
-		
+	$Camera2D.apply_shake(2.0) # Tremore leggero
 	if body.is_in_group("Enemy"):
 		if body.has_method("take_damage"):
 			body.take_damage(DAMAGE)

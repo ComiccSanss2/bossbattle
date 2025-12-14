@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://ckpupijvbpltw"]
+[gd_scene load_steps=15 format=3 uid="uid://ckpupijvbpltw"]
 
 [ext_resource type="Script" uid="uid://bjddr7ynofkkj" path="res://player.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://dx5jtag5qgoxc" path="res://assets/player/Crow Animations/crow_idle.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://cicop2iey3aam" path="res://assets/player/Crow Animations/crow_attack.png" id="3_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://q6h3ng51n6uk" path="res://assets/player/Crow Animations/crow_walk.png" id="4_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://82w5tr56qdd4" path="res://assets/player/Crow Animations/crow_jump.png" id="5_tuyoq"]
+[ext_resource type="Script" uid="uid://nspnjf5572bk" path="res://scenes/camera_2d.gd" id="6_tuyoq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tuyoq"]
 size = Vector2(17, 31)
@@ -285,3 +286,12 @@ libraries = {
 position = Vector2(15.375, 2.25)
 shape = SubResource("RectangleShape2D_d2wvv")
 disabled = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+limit_left = 20
+limit_top = -184
+limit_right = 1917
+limit_bottom = 600
+position_smoothing_speed = 7.0
+script = ExtResource("6_tuyoq")
