@@ -2,35 +2,43 @@ extends CharacterBody2D
 
 @export var max_health = 100
 var current_health = 0
+var damage_amount = 20 # Quanto male fa l'ascia?
 
 @onready var sprite = $Sprite2D
 @onready var anim = $AnimationPlayer
+@onready var axe_hitbox = $HitboxPivot/AxeHitbox # Assicurati il percorso sia giusto
 
 func _ready():
 	current_health = max_health
-	# Aggiungi il boss al gruppo "Enemy" così il player lo riconosce
-	add_to_group("Enemy") 
+	add_to_group("Enemy")
+	await get_tree().create_timer(2.0).timeout
+	anim.play("attacking")
+	# Colleghiamo la hitbox dell'ascia
+	axe_hitbox.body_entered.connect(_on_axe_hit)
 
+# --- LOGICA QUANDO IL BOSS VIENE COLPITO (L'hai già fatta) ---
 func take_damage(amount):
 	current_health -= amount
-	print("Boss colpito! HP rimasti: ", current_health)
-	
-	# Feedback visivo (Lampeggia rosso)
 	flash_red()
-	
+	print("Boss HP: ", current_health)
 	if current_health <= 0:
 		die()
 
 func flash_red():
-	# Semplice feedback: diventa rosso per 0.1 secondi
-	sprite.modulate = Color(1, 0, 0) # Rosso puro
+	sprite.modulate = Color(1, 0, 0)
 	await get_tree().create_timer(0.1).timeout
-	sprite.modulate = Color(1, 1, 1) # Torna normale
+	sprite.modulate = Color(1, 1, 1)
 
 func die():
-	print("BOSS SCONFITTO")
-	anim.play("Death") # Assicurati di avere questa animazione!
-	# Disabilita collisioni per non colpirlo da morto
-	$CollisionShape2D.set_deferred("disabled", true)
-	# await anim.animation_finished
-	# queue_free() # Rimuove il boss (o mostra schermata vittoria)
+	anim.play("death") # Se ce l'hai, altrimenti queue_free()
+	set_physics_process(false) # Smette di pensare
+
+# --- NUOVA PARTE: QUANDO IL BOSS COLPISCE TE ---
+func _on_axe_hit(body):
+	if body.name == "Player": # O body.is_in_group("Player") se hai messo il gruppo
+		print("Colpito!")
+		# ### NUOVO ###
+		if body.has_method("take_damage"):
+			 # Passiamo il danno (es. 1) e LA POSIZIONE del boss (self.global_position)
+			 # Così il player sa calcolare il knockback
+			body.take_damage(1, self.global_position)
